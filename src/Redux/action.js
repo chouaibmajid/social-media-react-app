@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getData = () => async (dispatch) => {
-  const { data } = await axios.get("http://localhost:5000");
+  const { data } = await axios.get("https://my-social-media-app-chouaib.herokuapp.com");
   try {
     dispatch({
       type: "FetchData",
@@ -13,7 +13,7 @@ export const getData = () => async (dispatch) => {
 };
 
 export const PostDatas = (form) => async (dispatch) => {
-  const { data } = await axios.post("http://localhost:5000", form);
+  const { data } = await axios.post("https://my-social-media-app-chouaib.herokuapp.com", form);
   try {
     dispatch({
       type: "PostData",
@@ -27,7 +27,7 @@ export const PostDatas = (form) => async (dispatch) => {
 export const UpdateData = (id,form) => async (dispatch) => {
   
   try {
-    const { data } = await axios.patch(`http://localhost:5000/${id}`, form);
+    const { data } = await axios.patch(`https://my-social-media-app-chouaib.herokuapp.com/${id}`, form);
     dispatch({
       type: "UpdateData",
       payload: data,
@@ -37,7 +37,7 @@ export const UpdateData = (id,form) => async (dispatch) => {
   }
 };
 export const deletePost = (id) => async (dispatch) => {
-  await axios.delete(`http://localhost:5000/${id}`);
+  await axios.delete(`https://my-social-media-app-chouaib.herokuapp.com/${id}`);
   try {
     dispatch({
       type: "deletePost",
@@ -50,7 +50,7 @@ export const deletePost = (id) => async (dispatch) => {
 
 export const likePost = (id) => async(dispatch) => {
 try {
-  const { data } = await axios.patch(`http://localhost:5000/${id}/likepost`)
+  const { data } = await axios.patch(`https://my-social-media-app-chouaib.herokuapp.com/${id}/likepost`)
   dispatch({
     type: "likeData",
     payload: data,
