@@ -9,8 +9,7 @@ dotenv.config();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-// const mongoosUrl =
-//   "mongodb+srv://chouaib:test1995@cluster0.kuw8g.mongodb.net/setPosts?retryWrites=true&w=majority";
+
 const PORT = process.env.PORT || 5000;
 
 mongoose
