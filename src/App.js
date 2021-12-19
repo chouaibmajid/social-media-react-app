@@ -1,49 +1,40 @@
-import React , {useState} from "react";
-import {useDispatch} from "react-redux"
-import {getData} from "./Redux/action"
-import { Container, AppBar, Typography, Grid, Grow } from "@material-ui/core";
-import Form from "./Components/Forms/Forms";
-import Posts from "./Components/Posts/Posts";
-import memories from "./memories.png";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getData } from "./Redux/action";
+import { Container } from "@material-ui/core";
+import Layout from "./HOC/Layout";
+import { BrowserRouter, Switch, Route, Link, Redirect } from "react-router-dom";
 import useStyles from "./styles";
+import NavBar from "./Components/NavBar/NavBar";
+import Home from "./Components/Home/Home";
+import Auth from "./Components/Auth/Auth";
+import PostDetails from "./Components/PostDetails/PostDetails";
 
-function App() {
-  const classes = useStyles();
-  const [cureentId, setCureentId] = useState(null);
 
-  const dispatch = useDispatch();
-  React.useEffect(() => {
-    dispatch(getData())
-  } ,[cureentId,dispatch])
-console.log(cureentId);
+const App = () => {
+  const user = JSON.parse(localStorage.getItem('profile'));
 
   return (
-    <Container maxWidth="lg">
-      <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography className={classes.heading} variant="h2" align="center">
-          Memories
-        </Typography>
-        <img className={classes.image} src={memories} alt="icon" height="60" />
-      </AppBar>
-      <Grow in>
-        <Container>
-          <Grid
-            container
-            justify="space-between"
-            alignItems="stretch"
-            spacing={3}
-          >
-            <Grid item xs={12} sm={7}>
-              <Posts setCureentId={setCureentId}/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Form cureentId={cureentId} setCureentId={setCureentId}/>
-            </Grid>
-          </Grid>
-        </Container>
-      </Grow>
-    </Container>
+    <BrowserRouter>
+      <Container maxWidth="xl">
+        <NavBar />
+        <Switch>
+          <Route path="/" exact component={() => <Redirect to="/posts" />} />
+          <Route path="/posts" exact component={Home} />
+          <Route path="/posts/search" exact component={Home} />
+          <Route path="/posts/:id" exact component={PostDetails} />
+          <Route path="/auth" exact component={() => (!user ? <Auth /> : <Redirect to="/posts" />)} />
+        </Switch>
+      </Container>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
+
+// <Route path="/about">
+//   <About />
+// </Route>
+// <Route path="/users">
+//   <Users />
+// </Route>

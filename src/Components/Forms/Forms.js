@@ -5,8 +5,8 @@ import FileBase from "react-file-base64";
 import { PostDatas, UpdateData } from "../../Redux/action";
 
 import useStyles from "./styles";
-
-const Form = ({ cureentId , setCureentId }) => {
+const user = JSON.parse(localStorage.getItem("profil"));
+const Form = ({ cureentId, setCureentId }) => {
   const dispatch = useDispatch();
   const Post = useSelector((state) =>
     cureentId ? state.Posts.Posts.find((item) => item._id === cureentId) : null
@@ -19,7 +19,6 @@ const Form = ({ cureentId , setCureentId }) => {
   }, [cureentId]);
 
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -34,24 +33,38 @@ const Form = ({ cureentId , setCureentId }) => {
   const submitForm = (e) => {
     e.preventDefault();
     if (cureentId === null) {
-      dispatch(PostDatas(postData));
+      dispatch(PostDatas({ ...postData, name: user?.result?.name }));
     }
     if (cureentId) {
-      dispatch(UpdateData(cureentId, postData));
+      dispatch(
+        UpdateData(
+          cureentId,
+       { ...postData, name: user?.result?.name }
+        )
+      );
     }
     clear();
   };
+  console.log(user?.result?.name)
   const clear = () => {
     setCureentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
+  };
+  if (!user?.result) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and like other's memories.
+        </Typography>
+      </Paper>
+    );
   }
-  return (
+  return ( 
     <Paper className={classes.paper}>
       <form
         autoComplete="off"
@@ -60,14 +73,7 @@ const Form = ({ cureentId , setCureentId }) => {
         onSubmit={submitForm}
       >
         <Typography variant="h6"></Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={updatState}
-        />
+
         <TextField
           name="title"
           variant="outlined"
